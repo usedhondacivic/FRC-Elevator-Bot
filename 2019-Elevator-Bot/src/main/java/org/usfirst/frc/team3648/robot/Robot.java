@@ -18,11 +18,15 @@ public class Robot extends TimedRobot {
 	//Define the controller and port (0)
 	private Joystick driveController = new Joystick(0);
 	
-	//Define the spark (motor controller) for each wheel. The number in parentheses is the port it is on in the roboRio
+	//Define the spark (motor controller) for each wheel. The number in parentheses is the port it is in on the roboRio
 	private Spark frontLeft = new Spark(0);
 	private Spark backLeft = new Spark(1);
 	private Spark frontRight = new Spark(3);
 	private Spark backRight = new Spark(2);
+
+	private Spark elevatorSpool = new Spark(4);
+
+	private float elevatorSpeed = 1f;
 	
 	//To do tank drive we need to group the wheels on each side into a group
 	private SpeedControllerGroup leftSide = new SpeedControllerGroup(frontLeft, backLeft);
@@ -70,6 +74,12 @@ public class Robot extends TimedRobot {
 		}else{
 			motorMod = 0.85f;
 		}
+
+		//Don't do this
+		elevatorSpool.set(
+			(driveController.getRawButton(Buttons.RIGHT_SHOULDER) ? elevatorSpeed : 0 ) +
+			(driveController.getRawButton(Buttons.LEFT_SHOULDER) ? -elevatorSpeed : 0 )
+		);
 	}
 
 	/**
